@@ -53,9 +53,10 @@ For this initial set, we chose a small problem. Here, we select 3 items with a m
 
 From this point and through the document, we make some simplifications for the problem being easy to solve, the problem variables can be reduced using the following simplifications:
 
-- Removing unnecesary decision variables, the minimum number of bins should be at least equal to the sum of the weights of the items. $l = \mathrm{Int}\left(\frac{\sum_i^n s(i)}{B}\right)$
+- Removing unnecesary decision variables, the minimum number of bins should be at least equal to the sum of the weights of the items. 
+<img src="./Images/simp0.png" width="200">
 
-- We assign the first item into the first bin., $x_{0,0} = 1$
+- We assign the first item into the first bin. <img src="./Images/simp2.png" width="200">, 
 
 Therefore, the number of variables after the simplifications and assuming $m = n$: 
 
