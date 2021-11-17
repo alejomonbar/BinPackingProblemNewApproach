@@ -113,7 +113,7 @@ We repeat the optimization process, because, QAOA has some ratio of convergence 
 
 <img src="./Images/cond.png" width="500">
 
-where <img src="./Images/cond1.png" width="15"> is the solution of our approach using QAOA and <img src="./Images/cond2.png" width="15"> is the solution using the classical approach for the QUBO and CPLEX.
+where <img src="./Images/cond1.png" width="80"> is the solution of our approach using QAOA and <img src="./Images/cond2.png" width="90"> is the solution using the classical approach for the QUBO and CPLEX.
 
 <img src="./Images/iterations_3.png" width="800">
 
@@ -123,7 +123,7 @@ At least for this problem, the classical QUBO, where we translate the inequality
 
 We repeat the ratio of convergence problem, this time varying the number of items just for our new approach  because for the classical approach it is not possible for the memory needed to simulate more than 3 items. Here, we keep the hyperparameters constant for 3 and 4 items to 10 iterations for COBYLA and 3 repetitions  of the QAOA and increase the max iteration to 100 for COBYLA and 4 for the repetitions for the QAOA. We see a decrease in the ratio of convergence with an increase in the number of items, to solve this problem we should investigate how to tweak the hyperparameter.
 
-<img src="./Images/difitems.png" width="500">
+<img src="./Images/difitems.png" width="900">
 
 
 
