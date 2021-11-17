@@ -87,4 +87,4 @@ As we see above, translating the inequality constraints to equality constraints 
 
 This equation has the property of been large for negative values, just what we want if the weights in the bins are greater than the maximum weight. However, we can not represent the exponential function using QUBOs. What we use is an approximation of the exponential to the second-order that is the maximum order for a QUBO: 
 
-<img src="./Images/new1.png" width="200">
+<img src="./Images/new2.png" width="200">
