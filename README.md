@@ -40,3 +40,29 @@ We look for a heuristic approach based on a new penalization that does not incre
 4) Comparison between both approaches
 
 5) Conclusions
+
+## 1. Codification of the problem
+
+To construct the model, we use the library docplex. Once we have the problem as a cplex model, we use the function QuadraticProgram from qiskit_optimization to translate the problem and finally the function QuadraticProgramToQubo to convert the problem into the quadratic unconstrained binary optimization (QUBO) representation.
+
+For this initial set, we chose a small problem. Here, we select 3 items with a maximal weight of 15. The weight of the items is chosen randomly from values between 1 and the maximal weight. 
+
+<img src="./Images/items_in_bins.png" width="500">
+
+### Simplifications
+
+From this point and through the document, we make some simplifications for the problem being easy to solve, the problem variables can be reduced using the following simplifications:
+
+- Removing unnecesary decision variables, the minimum number of bins should be at least equal to the sum of the weights of the items. $l = \mathrm{Int}\left(\frac{\sum_i^n s(i)}{B}\right)$
+
+- We assign the first item into the first bin., $x_{0,0} = 1$
+
+Therefore, the number of variables after the simplifications and assuming $m = n$: 
+
+<img src="./Images/simp1.png" width="200">
+
+meanwhile for the original number of variables is:
+
+$$mn+m = n^2 + n$$
+
+a reduction of $(n + l)$ variables.
