@@ -56,7 +56,7 @@ From this point and through the document, we make some simplifications for the p
 - Removing unnecesary decision variables, the minimum number of bins should be at least equal to the sum of the weights of the items. 
 <img src="./Images/simp0.png" width="200">
 
-- We assign the first item into the first bin. <img src="./Images/simp0.png" width="200">, 
+- We assign the first item into the first bin. <img src="./Images/simp2.png" width="200">, 
 
 Therefore, the number of variables after the simplifications and assuming $m = n$: 
 
