@@ -22,10 +22,10 @@ For our problem, we will explore the solution of the bin packing problem, using 
 
 - n is the number of items
 - m is the number of bins
-- $s(i)$ is the i-th item weight
+- s(i) is the i-th item weight
 - B is the maximum weight of the bin
-- $x_{ij}$ is the variable that represent if the item i is in the bin j.
-- $y_j$ is the variable that represent if bin j is used
+- <img src="./Images/ex0.png" width="80"> is the variable that represent if the item i is in the bin j.
+- <img src="./Images/ex1.png" width="80"> is the variable that represent if bin j is used
 
 ## The solution
 
@@ -54,16 +54,16 @@ For this initial set, we chose a small problem. Here, we select 3 items with a m
 From this point and through the document, we make some simplifications for the problem being easy to solve, the problem variables can be reduced using the following simplifications:
 
 - Removing unnecesary decision variables, the minimum number of bins should be at least equal to the sum of the weights of the items. 
-<img src="./Images/simp0.png" width="200">
+<img src="./Images/simp0.png" width="150">
 
-- We assign the first item into the first bin. <img src="./Images/simp4.png" width="200"> 
+- We assign the first item into the first bin. <img src="./Images/simp4.png" width="80"> 
 
-Therefore, the number of variables after the simplifications and assuming $m = n$: 
+Therefore, the number of variables after the simplifications and assuming m = n: 
 
-<img src="./Images/simp1.png" width="200">
+<img src="./Images/simp1.png" width="150">
 
 meanwhile for the original number of variables is:
 
 <img src="./Images/simp3.png" width="200">
 
-a reduction of $(n + l)$ variables.
+a reduction of n + l variables.
