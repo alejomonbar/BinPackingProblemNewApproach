@@ -24,11 +24,6 @@ minimize $$K = \sum_{j=1}^m y_j$$
 
 subject to:
 
-$$\sum_{i=1}^n s(i) x_{ij} \le B y_j \qquad  \forall j=1,...,m$$
-$$\sum_{j=1}^m x_{ij} = 1  \qquad \forall i = 1, ..., n$$
-$$x_{ij}\in  \{0,1\} \qquad \forall i=1,..,n \qquad j=1,..,m$$
-$$y_{j}\in  \{0,1\} \qquad \forall j=1,..,m $$
-
 - n is the number of items
 - m is the number of bins
 - $s(i)$ is the i-th item weight
