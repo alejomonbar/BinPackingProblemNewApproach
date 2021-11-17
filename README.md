@@ -111,11 +111,11 @@ As we can see below, our approach has a considerable reduction in terms of qubit
 
 We repeat the optimization process, because, QAOA has some ratio of convergence when solving a problem. Here, we use 10 times as the repetition of the problem and we compare against the cplex solution (considering it as the ideal) for both model. The criteria of convergence we select 5% from the optimal solution. Therefore,
 
-$$abs\left(1 - \frac{new_{solution}}{optimal_{solution}}\right) < 0.05$$
+<img src="./Images/cond.png" width="500">
 
-where $new_{solution}$ is the solution of our approach using QAOA and $optimal_{solution}$ is the solution using the classical approach for the QUBO and CPLEX.
+where <img src="./Images/cond1.png" width="15"> is the solution of our approach using QAOA and <img src="./Images/cond2.png" width="15"> is the solution using the classical approach for the QUBO and CPLEX.
 
-<img src="./Images/iterations_3.png" width="500">
+<img src="./Images/iterations_3.png" width="800">
 
 At least for this problem, the classical QUBO, where we translate the inequality constraints into equality and add them as penalization terms, QAOA is not able to find the optimal solution. However, for our approach, QAOA converges 100\% of the cases.
 
