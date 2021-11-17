@@ -64,6 +64,6 @@ Therefore, the number of variables after the simplifications and assuming $m = n
 
 meanwhile for the original number of variables is:
 
-$$mn+m = n^2 + n$$
+<img src="./Images/simp3.png" width="200">
 
 a reduction of $(n + l)$ variables.
