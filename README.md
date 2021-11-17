@@ -72,7 +72,19 @@ a reduction of n + l variables.
 
 ## 2. The Classical approach: Solution with the QUBO simplication approach and QAOA
 
-Once we have the problem as a QUBO representation, we can solve it using QAOA and the constrained optimization by linear approximation (COBYLA) algorithm. In this section, we show the results of the solution of the Bin Packing problem for three items and randomly selected weights.
+Once we have the problem as a QUBO representation, we can solve it using QAOA and the constrained optimization by linear approximation (COBYLA) algorithm. In this section, we show the results of the solution of the Bin Packing problem for three items, randomly selected weights, three QAOA repetitions, and max iterations number 10 for COBYLA.
 
 
-<img src="./Images/solCPLEX.png" width="500"><img src="./Images/solQAOA.png" width="500">
+<img src="./Images/solCPLEX.png" width="400"><img src="./Images/solQAOA.png" width="400">
+
+Here, the two selections of the item 1 is an error in the solution of the objective function, where the QAOA using the classical QUBO converter is not able to find the optimal solution.
+
+## 3. Our New approach: A Heuristic method to solve inequality constrained optimization problems
+
+As we see above, translating the inequality constraints to equality constraints and binary representation has a large cost in terms of qubits. Therefore, we want to propose a new method that does not involve the use of more qubits than those needed to represent the bins and the items into the bins. Then, we need a penalization term that adds a large penality when the sum of weights of the items in a bin is greater than the maximum weight. We realize it with an exponential function of the form:
+
+<img src="./Images/new0.png" width="200">
+
+This equation has the property of been large for negative values, just what we want if the weights in the bins are greater than the maximum weight. However, we can not represent the exponential function using QUBOs. What we use is an approximation of the exponential to the second-order that is the maximum order for a QUBO: 
+
+<img src="./Images/new1.png" width="200">
