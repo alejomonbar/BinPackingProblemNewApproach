@@ -100,3 +100,30 @@ where <img src="./Images/new4.png" width="120">, we do not need the 1 in front o
 <img src="./Images/new5.png" width="700">
 
 where <img src="./Images/new6.png" width="15"> is a Lagrange multiplier that adjust the penalization to be proportional to the objective function and we must set it. 
+
+### How behaves the classical approach to translate the problem in QUBO representation versus our new approach
+
+As we can see below, our approach has a considerable reduction in terms of qubits' number for the Bin Packing problem. We show results for a max_weight of 15 which involves an addition of 3 qubits for each inequality constraint. 
+
+<img src="./Images/num_qubits.png" width="500">
+
+## Repeating the solution many times to see the ration of convergence
+
+We repeat the optimization process, because, QAOA has some ratio of convergence when solving a problem. Here, we use 10 times as the repetition of the problem and we compare against the cplex solution (considering it as the ideal) for both model. The criteria of convergence we select 5% from the optimal solution. Therefore,
+
+$$abs\left(1 - \frac{new_{solution}}{optimal_{solution}}\right) < 0.05$$
+
+where $new_{solution}$ is the solution of our approach using QAOA and $optimal_{solution}$ is the solution using the classical approach for the QUBO and CPLEX.
+
+<img src="./Images/iterations_3.png" width="500">
+
+At least for this problem, the classical QUBO, where we translate the inequality constraints into equality and add them as penalization terms, QAOA is not able to find the optimal solution. However, for our approach, QAOA converges 100\% of the cases.
+
+## Ratio of convergence 3, 4, and 5 items with our new method
+
+We repeat the ratio of convergence problem, this time varying the number of items just for our new approach  because for the classical approach it is not possible for the memory needed to simulate more than 3 items. Here, we keep the hyperparameters constant for 3 and 4 items to 10 iterations for COBYLA and 3 repetitions  of the QAOA and increase the max iteration to 100 for COBYLA and 4 for the repetitions for the QAOA. We see a decrease in the ratio of convergence with an increase in the number of items, to solve this problem we should investigate how to tweak the hyperparameter.
+
+<img src="./Images/difitems.png" width="500">
+
+
+
