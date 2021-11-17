@@ -20,10 +20,6 @@ For our problem, we will explore the solution of the bin packing problem, using 
 
 <img src="./Images/Formulas.png" width="500">
 
-minimize $$K = \sum_{j=1}^m y_j$$
-
-subject to:
-
 - n is the number of items
 - m is the number of bins
 - $s(i)$ is the i-th item weight
