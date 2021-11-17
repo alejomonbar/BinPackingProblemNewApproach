@@ -18,7 +18,7 @@ For our problem, we will explore the solution of the bin packing problem, using 
 
 ### Problem statement
 
-<img src="./Images/Formulas.png" width="600">
+<img src="./Images/Formulas.png" width="500">
 
 minimize $$K = \sum_{j=1}^m y_j$$
 
