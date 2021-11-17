@@ -93,9 +93,10 @@ This equation has the property of been large for negative values, just what we w
 
 Now, we can represent the inequality constraint using the new approach mention above:
 
-<img src="./Images/new3.png" width="300">
+<img src="./Images/new3.png" width="400">
 
-where <img src="./Images/new4.png" width="300">, we do not need the 1 in front of t because is just a constant. Then, it reduce to:
-<img src="./Images/new5.png" width="300">
+where <img src="./Images/new4.png" width="120">, we do not need the 1 in front of t because is just a constant. Then, it reduce to:
 
-where <img src="./Images/new6.png" width="300"> is a Lagrange multiplier that adjust the penalization to be proportional to the objective function and we must set it. 
+<img src="./Images/new5.png" width="700">
+
+where <img src="./Images/new6.png" width="15"> is a Lagrange multiplier that adjust the penalization to be proportional to the objective function and we must set it. 
