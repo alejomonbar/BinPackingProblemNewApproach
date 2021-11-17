@@ -67,3 +67,6 @@ meanwhile for the original number of variables is:
 <img src="./Images/simp3.png" width="200">
 
 a reduction of n + l variables.
+
+<img src="./Images/simp.png" width="500">
+
