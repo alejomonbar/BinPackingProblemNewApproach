@@ -24,8 +24,8 @@ For our problem, we will explore the solution of the bin packing problem, using 
 - m is the number of bins
 - s(i) is the i-th item weight
 - B is the maximum weight of the bin
-- <img src="./Images/ex0.png" width="80"> is the variable that represent if the item i is in the bin j.
-- <img src="./Images/ex1.png" width="80"> is the variable that represent if bin j is used
+- <img src="./Images/ex0.png" width="40"> is the variable that represent if the item i is in the bin j.
+- <img src="./Images/ex1.png" width="40"> is the variable that represent if bin j is used
 
 ## The solution
 
