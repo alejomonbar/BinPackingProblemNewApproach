@@ -70,3 +70,9 @@ a reduction of n + l variables.
 
 <img src="./Images/simp.png" width="500">
 
+## 2. The Classical approach: Solution with the QUBO simplication approach and QAOA
+
+Once we have the problem as a QUBO representation, we can solve it using QAOA and the constrained optimization by linear approximation (COBYLA) algorithm. In this section, we show the results of the solution of the Bin Packing problem for three items and randomly selected weights.
+
+
+<img src="./Images/solCPLEX.png" width="500"><img src="./Images/solQAOA.png" width="500">
