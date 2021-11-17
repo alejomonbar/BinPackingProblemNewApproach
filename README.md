@@ -123,7 +123,11 @@ At least for this problem, the classical QUBO, where we translate the inequality
 
 We repeat the ratio of convergence problem, this time varying the number of items just for our new approach  because for the classical approach it is not possible for the memory needed to simulate more than 3 items. Here, we keep the hyperparameters constant for 3 and 4 items to 10 iterations for COBYLA and 3 repetitions  of the QAOA and increase the max iteration to 100 for COBYLA and 4 for the repetitions for the QAOA. We see a decrease in the ratio of convergence with an increase in the number of items, to solve this problem we should investigate how to tweak the hyperparameter.
 
+For 5 items, using the current approach of max iteration of 10 and 3 repetitions, the model does not converge. Therefore, we increasethe max iteration number to 100 and 4 repetitions. For the different cases, there are two of them that converge and other get closed to the optimal solution. Further selection of hyperparameters should made to see even at this point we can find optimal solutions.
+
 <img src="./Images/difitems.png" width="900">
 
+# 5. Conclusions
 
+We have proposed a method that replaces the actual qiskit QUBO converter for the Bin Packing problem. Our approach exploits the concept of an approximation of an exponential function to represent the inequality constraint directly as a penalty in the objective function. We test our method against the qiskit QUBO converter, with 10 iterations, COBYLA classical optimizer, and QAOA. Our method is able to reduce significantly the number of qubits and converge for 100\% of cases if we only use 3 items against 0\% for the classical QUBO converter. We were even able to test our method for 4 and 5 items, something that is not possible with the classical converter and in both cases we found convergence. 
 
