@@ -1,6 +1,5 @@
 # Qiskit Hackathon Global
-## Qiskit Version
-<img src="./Images/Version.png" width="400">
+
 
 # NEW METHOD FOR INEQUALITY CONSTRAINED OPTIMIZATION PROBLEM
 
@@ -133,3 +132,5 @@ For 5 items, using the current approach of max iteration of 10 and 3 repetitions
 
 We have proposed a method that replaces the actual qiskit QUBO converter for the Bin Packing problem. Our approach exploits the concept of an approximation of an exponential function to represent the inequality constraint directly as a penalty in the objective function. We test our method against the qiskit QUBO converter, with 10 iterations, COBYLA classical optimizer, and QAOA. Our method is able to reduce significantly the number of qubits and converge for 100\% of cases if we only use 3 items against 0\% for the classical QUBO converter. We were even able to test our method for 4 and 5 items, something that is not possible with the classical converter and in both cases we found convergence. 
 
+## Qiskit Version
+<img src="./Images/Version.png" width="400">
