@@ -1,6 +1,6 @@
 # Qiskit Hackathon Global
 ## Qiskit Version
-<img src="./Images/difitems.png" width="400">
+<img src="./Images/version.png" width="400">
 
 # NEW METHOD FOR INEQUALITY CONSTRAINED OPTIMIZATION PROBLEM
 
