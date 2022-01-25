@@ -96,7 +96,22 @@ def Knapsack(weights, values, max_weight):
     qubo = QuadraticProgramToQubo().convert(qp)
     return qubo
     
+def KnapsackNewApproach(values, weights, max_weight, alpha=0.01):
+    mdl = Model("KnapsackNewApproach")
+    print(len(values))
+    x = {i: mdl.binary_var(name=f"x_{i}") for i in range(len(values))}
+    
+    # PENALIZATION
+    penalization = 0
+    for j in range(len(values)):
+        t = max_weight - mdl.sum(weights[i] * x[i] for i in range(len(weights)))
+        penalization += -t + t**2 / 2
+    mdl.maximize(mdl.sum(values[i] * x[i] for i in x) - alpha *(penalization))
 
+    qp = QuadraticProgram()
+    qp.from_docplex(mdl) #bin it couldn't be in the other bins
+    qubo = QuadraticProgramToQubo().convert(qp)# Create a converter from quadratic program to qubo representation
+    return qubo
 
 def interpret(results, weights, max_weight, num_items, num_bins, simplify=False):
     """
@@ -244,19 +259,4 @@ def eval_constrains(qp, result):
         eval_const.append(const.evaluate(result.x[:varN]))
     return np.array(eval_const) 
 
-def KnapsackNewApproach(values, weights, max_weight, alpha=0.01):
-    mdl = Model("KnapsackNewApproach")
-    print(len(values))
-    x = {i: mdl.binary_var(name=f"x_{i}") for i in range(len(values))}
-    
-    # PENALIZATION
-    penalization = 0
-    for j in range(len(values)):
-        t = max_weight - mdl.sum(weights[i] * x[i] for i in range(len(weights)))
-        penalization += -t + t**2 / 2
-    mdl.maximize(mdl.sum(values[i] * x[i] for i in x) - alpha *(penalization))
 
-    qp = QuadraticProgram()
-    qp.from_docplex(mdl) #bin it couldn't be in the other bins
-    qubo = QuadraticProgramToQubo().convert(qp)# Create a converter from quadratic program to qubo representation
-    return qubo
