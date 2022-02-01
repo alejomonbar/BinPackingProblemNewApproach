@@ -11,11 +11,16 @@ from docplex.mp.model import Model
 
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
+from qiskit_optimization.problems.constraint import ConstraintSense
+
 from qiskit import QuantumCircuit
 from qiskit.circuit import ParameterVector
 from qiskit_optimization.algorithms import CplexOptimizer
 
 from qiskit import Aer
+
+import itertools
+
 
 def BinPacking(num_items, num_bins, weights, max_weight, simplification=False):
     # Construct model using docplex
@@ -205,33 +210,34 @@ def qaoa_circuit(qubo: QuadraticProgram, p: int = 1):
     qaoa_circuit.measure(range(size), range(size))
     return qaoa_circuit
 
-def cost_func(parameters, circuit, objective, backend=Aer.get_backend("qasm_simulator")):
+def cost_func(parameters, circuit, objective, n=10, backend=Aer.get_backend("qasm_simulator")):
     """
-    This function returns the cost function Eq. 5 for the circuit created with the function ground_circuit.
+    Return a cost function that depends of the QAOA circuit 
 
     Parameters
     ----------
-    params : list.
-        List of angles gamma and beta with size equal to the depth.
-    G : networkx graph
-        Graph with the information of number of vertices, edges and weights.
-    depth : int
-        number of steps the unitarity is applied.
-    shots: int
-        Circuit number of repetition of the quantum circuit (To get the statistics)
-    imp: Boolean
-        Improvement described in section 4.9
-    backend: IBMQ backend to solve the problem
+    parameters : list
+        alpha and beta values of the QAOA circuit.
+    circuit : QuantumCircuit
+        Qiskit quantum circuit of the QAOA.
+    objective : QuadraticProgram
+        Objective function of the QuadraticProgram
+    n : int, optional
+        number of strings from the quantum circuit measurement to be use for the cost. The default is 10.
+    backend : Qiskit Backend, optional
+        The default is Aer.get_backend("qasm_simulator").
+
     Returns
     -------
-    qc : qiskit circuit
-        Circuit with a x-rotation of every qubit.
+    float
+        Cost of the evaluation of n string on the objective function 
+
     """
     cost = 0
     counts = backend.run(circuit.assign_parameters(parameters=parameters)).result().get_counts()
     counts = {k: v for k, v in sorted(counts.items(), key=lambda item: item[1], reverse=True)}
     samples = 0
-    for sample in list(counts.keys())[:10]:
+    for sample in list(counts.keys())[:n]:
         cost += counts[sample] * objective.evaluate([int(_) for _ in sample])
         samples += counts[sample]
     return cost / samples
@@ -251,12 +257,61 @@ def new_eq_optimal(qubo_new, qubo_classical):
                                                #function
     return result_new_ideal
 
-def eval_constrains(qp, result):
+def eval_constrains(qp, result, max_weight):
+    """
+    Evaluate if all the restrictions of a quadratic program are satisfied.
+
+    Parameters
+    ----------
+    qp : QuadraticProgram
+        Problem to be solved, here the restrictions are still accessible.
+    result : list
+        Solution of the QUBO .
+    max_weight : int
+        It works for Bin Packing problem and is the maximum weight a bin can 
+        handled.
+
+    Returns
+    -------
+    Boolean
+        If any of the inequality constraints is not satisfied return False.
+
+    """
     constraints = qp.linear_constraints
     varN = len(qp.variables)
     eval_const = []
     for const in constraints:
-        eval_const.append(const.evaluate(result.x[:varN]))
-    return np.array(eval_const) 
+        if const.sense in [ConstraintSense.GE, ConstraintSense.LE]:
+            eval_const.append(const.evaluate(result.x[:varN]) - max_weight)
+    return not any(np.array(eval_const) > 0)
+
+def mapping_cost(alpha, beta, qubo):
+    """
+    Only valid for one step in the QAOA solution of a problem.
+
+    Parameters
+    ----------
+    alpha : array
+        angle alpha of the QAOA algorithm.
+    beta : array
+        angle beta (mixing anlge) of the QAOA algorithm.
+    qubo : Quadratic Unconstrained binary optimization
+        
+
+    Returns
+    -------
+    Cost: squared array
+
+    """
+    circuit = qaoa_circuit(qubo)
+    n1 = len(alpha)
+    n2 = len(beta)
+    
+    cost = []
+    for parameters in itertools.product(alpha, beta):
+        cost.append(cost_func(parameters, circuit, qubo.objective))
+    cost = np.array(cost).reshape(n1,n2)
+    
+    return cost
 
 
