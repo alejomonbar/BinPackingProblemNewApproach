@@ -242,6 +242,42 @@ def cost_func(parameters, circuit, objective, n=10, backend=Aer.get_backend("qas
         samples += counts[sample]
     return cost / samples
 
+def check_best_sol(parameters, circuit, qp, max_weight, n=10, backend=Aer.get_backend("qasm_simulator")):
+    """
+    Return a cost function that depends of the QAOA circuit 
+
+    Parameters
+    ----------
+    parameters : list
+        alpha and beta values of the QAOA circuit.
+    circuit : QuantumCircuit
+        Qiskit quantum circuit of the QAOA.
+    objective : QuadraticProgram
+        Objective function of the QuadraticProgram
+    n : int, optional
+        number of strings from the quantum circuit measurement to be use for the cost. The default is 10.
+    backend : Qiskit Backend, optional
+        The default is Aer.get_backend("qasm_simulator").
+
+    Returns
+    -------
+    float
+        Cost of the evaluation of n string on the objective function 
+
+    """
+    cost = 0
+    counts = backend.run(circuit.assign_parameters(parameters=parameters)).result().get_counts()
+    counts = {k: v for k, v in sorted(counts.items(), key=lambda item: item[1], reverse=True)}
+    cost_min = np.inf
+    best_solution = None
+    for sample in list(counts.keys())[:n]:
+        sample_list = [int(_) for _ in sample]
+        cost = qp.objective.evaluate(sample_list)
+        if eval_constrains(qp, sample_list, max_weight) and (cost < cost_min):
+            best_solution = sample_list
+    if best_solution == None:
+        return print("There is not possible solution in the samples analized")
+    return best_solution
 
 def new_eq_optimal(qubo_new, qubo_classical):
     """
@@ -282,10 +318,12 @@ def eval_constrains(qp, result, max_weight):
     eval_const = []
     for const in constraints:
         if const.sense in [ConstraintSense.GE, ConstraintSense.LE]:
-            eval_const.append(const.evaluate(result.x[:varN]) - max_weight)
+            eval_const.append(const.evaluate(result[:varN]) - max_weight)
+        if const.sense == ConstraintSense.EQ:
+            eval_const.append(const.evaluate(result[:varN]) - 1)
     return not any(np.array(eval_const) > 0)
 
-def mapping_cost(alpha, beta, qubo):
+def mapping_cost(alpha, beta, qubo, n=10, backend=Aer.get_backend("qasm_simulator")):
     """
     Only valid for one step in the QAOA solution of a problem.
 
@@ -296,8 +334,11 @@ def mapping_cost(alpha, beta, qubo):
     beta : array
         angle beta (mixing anlge) of the QAOA algorithm.
     qubo : Quadratic Unconstrained binary optimization
-        
-
+    n : int
+        number of solutions taken from the measurement of the circuit
+    backend: Qiskit backend
+        Backend used to simulated QAOA
+    
     Returns
     -------
     Cost: squared array
@@ -309,9 +350,8 @@ def mapping_cost(alpha, beta, qubo):
     
     cost = []
     for parameters in itertools.product(alpha, beta):
-        cost.append(cost_func(parameters, circuit, qubo.objective))
+        cost.append(cost_func(parameters, circuit, qubo.objective, n, backend))
     cost = np.array(cost).reshape(n1,n2)
-    
     return cost
 
 
