@@ -240,7 +240,7 @@ def cost_func(parameters, circuit, objective, n=10, backend=Aer.get_backend("qas
     for sample in list(counts.keys())[:n]:
         cost += counts[sample] * objective.evaluate([int(_) for _ in sample])
         samples += counts[sample]
-    return cost / samples
+    return cost**2 / samples
 
 def check_best_sol(parameters, circuit, qp, max_weight, n=10, backend=Aer.get_backend("qasm_simulator")):
     """
@@ -275,6 +275,7 @@ def check_best_sol(parameters, circuit, qp, max_weight, n=10, backend=Aer.get_ba
         cost = qp.objective.evaluate(sample_list)
         if eval_constrains(qp, sample_list, max_weight) and (cost < cost_min):
             best_solution = sample_list
+            cost_min = cost
     if best_solution == None:
         return print("There is not possible solution in the samples analized")
     return best_solution
@@ -315,13 +316,16 @@ def eval_constrains(qp, result, max_weight):
     """
     constraints = qp.linear_constraints
     varN = len(qp.variables)
-    eval_const = []
     for const in constraints:
         if const.sense in [ConstraintSense.GE, ConstraintSense.LE]:
-            eval_const.append(const.evaluate(result[:varN]) - max_weight)
-        if const.sense == ConstraintSense.EQ:
-            eval_const.append(const.evaluate(result[:varN]) - 1)
-    return not any(np.array(eval_const) > 0)
+            print(const.evaluate(result[:varN]) - const.rhs)
+            if (const.evaluate(result[:varN]) - const.rhs) > 0:
+                return False
+        elif const.sense == ConstraintSense.EQ:
+            print(const.evaluate(result[:varN]))
+            if const.evaluate(result[:varN]) != 1.0:
+                return False
+    return True
 
 def mapping_cost(alpha, beta, qubo, n=10, backend=Aer.get_backend("qasm_simulator")):
     """
