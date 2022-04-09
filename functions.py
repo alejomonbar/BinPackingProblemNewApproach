@@ -19,6 +19,8 @@ from qiskit_optimization.algorithms import CplexOptimizer
 
 from qiskit import Aer
 
+from qiskit_optimization.translators import from_docplex_mp
+
 import itertools
 
 
@@ -42,8 +44,7 @@ def BinPacking(num_items, num_bins, weights, max_weight, simplification=False):
         mdl.add_constraint(mdl.sum(weights[i] * x[i, j] for i in range(num_items)) <= max_weight * y[j])
 
     # Load quadratic program from docplex model
-    qp = QuadraticProgram()
-    qp.from_docplex(mdl)
+    qp = from_docplex_mp(mdl)
     if simplification:
         l = int(np.ceil(np.sum(weights)/max_weight))
         qp = qp.substitute_variables({f"y_{_}":1 for _ in range(l)}) # First simplification 
@@ -74,8 +75,7 @@ def BinPackingNewApproach(num_items, num_bins, weights, max_weight, alpha=0.01, 
         mdl.add_constraint(mdl.sum(x[i, j] for j in range(num_bins)) == 1)
 
     # Load quadratic program from docplex model
-    qp = QuadraticProgram()
-    qp.from_docplex(mdl)
+    qp = from_docplex_mp(mdl)
     if simplification:
         l = int(np.ceil(np.sum(weights)/max_weight))
         qp = qp.substitute_variables({f"y_{_}":1 for _ in range(l)}) # First simplification 
@@ -96,8 +96,7 @@ def Knapsack(weights, values, max_weight):
     
     mdl.add_constraint(mdl.sum(weights[i] * x[i] for i in range(num_items)) <= max_weight)
     # Converting to QUBO
-    qp = QuadraticProgram()
-    qp.from_docplex(mdl)
+    qp = from_docplex_mp(mdl)
     qubo = QuadraticProgramToQubo().convert(qp)
     return qubo
     
@@ -113,8 +112,7 @@ def KnapsackNewApproach(values, weights, max_weight, alpha=0.01):
         penalization += -t + t**2 / 2
     mdl.maximize(mdl.sum(values[i] * x[i] for i in x) - alpha *(penalization))
 
-    qp = QuadraticProgram()
-    qp.from_docplex(mdl) #bin it couldn't be in the other bins
+    qp = from_docplex_mp(mdl) #bin it couldn't be in the other bins
     qubo = QuadraticProgramToQubo().convert(qp)# Create a converter from quadratic program to qubo representation
     return qubo
 
